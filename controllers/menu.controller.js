@@ -172,6 +172,53 @@ catch(error){
 }
 };
 
+
+
+const updateCategory=async (req,res)=>{
+try{
+    const {categoryId}=req.params;
+    await category.findByIdAndUpdate(categoryId, req.body);
+    const updatedCategory=await category.findById(categoryId);
+    return res.status(200).json(updatedCategory);
+}
+catch(error){
+    return res.status(400).json({error:error.message});
+}
+};
+
+
+const updateSubCategory=async(req, res)=>{
+    try{
+        const {categoryId,subId}= req.params;
+        const updateData=req.body;
+        // console.log("A");
+        const Category= await category.findById(categoryId);
+        // console.log("A");
+
+        const Sub= await Category.subCategory.id(subId);
+        // console.log("A");
+
+        Object.keys(updateData).forEach(key => {
+            Category.subCategory[key] = updateData[key];
+        });
+        await Category.save();
+        // console.log("A");
+        const updatedSubCategory = Category.subCategory.id(subId);
+
+
+        return res.status(200).json(updatedSubCategory);
+
+    }
+    catch(error){
+        return res.status(400).json({error:error.message});
+    }
+};
+
+
+
+
 module.exports={createCategory, createSub,getCategory,getSubCategory,createItems,getItems,getCategoryById,getSubCategoryById,
-    getItemById
+    getItemById,
+    updateCategory,
+    updateSubCategory
 };
