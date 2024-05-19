@@ -2,7 +2,8 @@ const express=require("express");
 const router=express();
 const {createCategory, createSub, getCategory,getSubCategory,createItems, getItems, getCategoryById,getSubCategoryById,getItemById,
     updateCategory,
-    updateSubCategory
+    updateSubCategory,
+    updateItem
 }=require("../controllers/menu.controller");
 
 //creating the category
@@ -27,6 +28,8 @@ router.put("/category/:categoryId",updateCategory);
 //editing the contents of a sub-category
 router.put("/category/:categoryId/:subId",updateSubCategory);
 
+//editing the contents of the items
+router.put("/category/:categoryId/:subId/:itemId",updateItem);
 
 
 

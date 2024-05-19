@@ -213,6 +213,29 @@ const updateSubCategory=async(req, res)=>{
         return res.status(400).json({error:error.message});
     }
 };
+const updateItem=async (req,res)=>{
+    try{
+        const {categoryId,subId,itemId}=req.params;
+        const updateData=req.body;
+        const Category= await category.findById(categoryId);
+        const Sub=await Category.subCategory.id(subId);
+        const Item= await Sub.items.id(itemId);
+
+        Object.keys(updateData).forEach(key => {
+            Item[key] = updateData[key];
+        });
+        await Category.save();
+
+        const updatedItem = subCategory.items.id(itemId);
+
+        return res.status(200).json(updatedItem);
+
+    }
+    catch(error){
+        return res.status(400).json({error:error.message});
+    }
+};
+
 
 
 
@@ -220,5 +243,6 @@ const updateSubCategory=async(req, res)=>{
 module.exports={createCategory, createSub,getCategory,getSubCategory,createItems,getItems,getCategoryById,getSubCategoryById,
     getItemById,
     updateCategory,
-    updateSubCategory
+    updateSubCategory,
+    updateItem
 };
