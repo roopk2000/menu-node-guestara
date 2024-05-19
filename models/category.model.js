@@ -1,5 +1,6 @@
 const { Timestamp } = require("mongodb");
 const mongoose=require("mongoose");
+const { subSchema } = require("./sub.model");
 
 
 const schema= new mongoose.Schema({
@@ -31,6 +32,10 @@ const schema= new mongoose.Schema({
         required: function(){
             return this.taxApplicability;
         }
+    },
+    subCategory: {
+        type: [subSchema],
+        default: [] // Ensure subCategory is initialized as an empty array
     }
 
 },{
