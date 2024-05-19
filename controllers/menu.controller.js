@@ -118,6 +118,27 @@ catch(error){
 }
 };
 
+
+const getSubCategoryById=async(req, res)=>{
+try{
+    const { categoryId,subId } = req.params; // The ID of the category
+
+        // Fetch the category document by its ID
+        const Category = await category.findById(categoryId);
+
+        if (!Category) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+
+        // Return all subcategories within the category
+        return res.status(200).json(Category.subCategory.id(subId));
+}
+catch(error){
+    return res.status(400).json({error:error.message});
+
+}
+};
+
 const getItems=async (req,res)=>{
     try{
         const {categoryId, subId}=req.params;
@@ -138,4 +159,19 @@ const getItems=async (req,res)=>{
     }
 };
 
-module.exports={createCategory, createSub,getCategory,getSubCategory,createItems,getItems,getCategoryById};
+const getItemById=async(req,res)=>{
+try{
+  const {categoryId,subId,itemId}=req.params;
+  const Category= await category.findById(categoryId);
+  const Sub=await Category.subCategory.id(subId);
+  const Item= await Sub.items.id(itemId);
+  return res.status(200).json(Item);
+}
+catch(error){
+    return res.status(400).json({error:error.message});
+}
+};
+
+module.exports={createCategory, createSub,getCategory,getSubCategory,createItems,getItems,getCategoryById,getSubCategoryById,
+    getItemById
+};
